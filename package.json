@@ -1,0 +1,20 @@
+{
+  "name": "go_sports",
+  "version": "1.0.0",
+  "description": "packager for go_sports webapp",
+  "homepage": "https://github.com/gatlingun/go_sports#readme",
+  "bugs": {
+    "url": "https://github.com/gatlingun/go_sports/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gatlingun/go_sports.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "frontend/dist/main.js",
+  "scripts": {
+    "launch": "cd frontend && tsc && cd ../backend && go run ."
+  }
+}

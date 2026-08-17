@@ -24,3 +24,6 @@ async function checkHealth(): Promise<void> {
         }
     }
 }
+
+//We want the field to auto populate upon load
+checkHealth()
