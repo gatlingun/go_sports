@@ -4,16 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>NFL Dashboard</title>
+    <title>GO Sports Dashboard</title>
 
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <main class="container">
         <header>
-            <h1>NFL Dashboard</h1>
-            <p>Welcome to the NFL dashboard.</p>
+            <h1>GO Sports Dashboard</h1>
+            <p>Welcome to the GO Sports dashboard.</p>
+            <div class="league-selector">
+                <label for="league-select">League</label>
+
+                <select id="league-select">
+                    <option value="nfl" selected>NFL</option>
+                    <option value="mlb" disabled>MLB</option>
+                    <option value="nba" disabled>NBA</option>
+                    <option value="nhl" disabled>NHL</option>
+                </select>
+        </div>
         </header>
 
         <section class="card">

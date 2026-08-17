@@ -27,6 +27,28 @@ header p {
     color: #666;
 }
 
+.league-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.league-selector label {
+    font-weight: bold;
+}
+
+#league-select {
+    padding: 10px 14px;
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    background: white;
+    cursor: pointer;
+}
+
 .card {
     background: white;
     padding: 24px;
