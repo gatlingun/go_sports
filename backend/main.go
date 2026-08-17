@@ -25,6 +25,9 @@ func main() {
 
 	// Route requests for health handler
 	http.HandleFunc("/health", healthHandler)
+	//Register frontend
+	fileServer := http.FileServer(http.Dir("../frontend"))
+	http.Handle("/", fileServer)
 	// Start the server on port 8080
 	fmt.Println("Server is running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))

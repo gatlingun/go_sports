@@ -17,3 +17,6 @@ Where backend fetches all relevant information and frontend serves the data.
 ### Revision history
 
 gatlingun 08/2026 Project start
+
+### AI Disclaimer
+AI coding assistants were used in the creation of this project
