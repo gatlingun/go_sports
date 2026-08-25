@@ -2,9 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 )
 
 const health_status_url string = "https://v1.american-football.api-sports.io/status"
@@ -58,14 +61,24 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Helper to resolve global api key
-func resolveAPIKey() {
-	api_key = ""
+func resolveAPIKey() error {
+	data, err := os.ReadFile("../.env")
+	if err != nil {
+		log.Println("API key couldn't be found")
+		return errors.New("No API key")
+	}
+	split_data := strings.SplitN(string(data), "=", 2)
+	api_key = split_data[1]
+	return nil
 }
 
 func main() {
 	fmt.Println("starting webservice")
 	//Resolve api key
-	resolveAPIKey()
+	err := resolveAPIKey()
+	if err != nil {
+		os.Exit(-1)
+	}
 	// Route requests for health handler
 	http.HandleFunc("/health", healthHandler)
 	//Register frontend
