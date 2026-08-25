@@ -81,6 +81,8 @@ func main() {
 	}
 	// Route requests for health handler
 	http.HandleFunc("/health", healthHandler)
+	//Route requests for games to game fetcher handler
+	http.HandleFunc("/nfl_games", nfl_game_data_fetch_handler)
 	//Register frontend
 	fileServer := http.FileServer(http.Dir("../frontend"))
 	http.Handle("/", fileServer)
