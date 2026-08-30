@@ -4,38 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GO Sports Dashboard</title>
+    <title>GO Sports — NFL Dashboard</title>
 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <main class="container">
-        <header>
-            <h1>GO Sports Dashboard</h1>
-            <p>Welcome to the GO Sports dashboard.</p>
-            <div class="league-selector">
-                <label for="league-select">League</label>
-
-                <select id="league-select">
-                    <option value="nfl" selected>NFL</option>
-                    <option value="mlb" disabled>MLB</option>
-                    <option value="nba" disabled>NBA</option>
-                    <option value="nhl" disabled>NHL</option>
-                </select>
-        </div>
+        <header class="hero">
+            <div class="eyebrow"><span class="eyebrow-dot"></span> GO Sports / 2026 season</div>
+            <div class="hero-row">
+                <div>
+                    <h1>Pick your <span>team.</span><br>Follow the season.</h1>
+                    <p class="hero-copy">Football Fun!</p>
+                </div>
+                <div class="league-selector">
+                    <label for="league-select">League</label>
+                    <select id="league-select">
+                        <option value="nfl" selected>NFL</option>
+                        <option value="mlb" disabled>MLB</option>
+                        <option value="nba" disabled>NBA</option>
+                        <option value="nhl" disabled>NHL</option>
+                    </select>
+                </div>
+            </div>
         </header>
 
-        <section class="card">
-            <h2>Backend Health</h2>
-
-            <p id="health-status">
-                Backend Unavaliable
-            </p>
-
-            <button id="health-button">
-                Refresh Status
-            </button>
+        <section class="team-picker" aria-labelledby="team-picker-title">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Choose a squad</p>
+                    <h2 id="team-picker-title">NFL teams</h2>
+                </div>
+                <span class="scroll-hint">Scroll to explore <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="team-slider" role="list" aria-label="NFL teams">
+                <button class="team-chip team-chip--active" type="button" aria-label="Arizona Cardinals" aria-pressed="true"><span class="team-mark mark-ari"><img src="/assets/team-logos/ari.png" alt=""></span><span class="team-name">Cardinals</span></button>
+                <button class="team-chip" type="button" aria-label="Atlanta Falcons" aria-pressed="false"><span class="team-mark mark-atl"><img src="/assets/team-logos/atl.png" alt=""></span><span class="team-name">Falcons</span></button>
+                <button class="team-chip" type="button" aria-label="Baltimore Ravens" aria-pressed="false"><span class="team-mark mark-bal"><img src="/assets/team-logos/bal.png" alt=""></span><span class="team-name">Ravens</span></button>
+                <button class="team-chip" type="button" aria-label="Buffalo Bills" aria-pressed="false"><span class="team-mark mark-buf"><img src="/assets/team-logos/buf.png" alt=""></span><span class="team-name">Bills</span></button>
+                <button class="team-chip" type="button" aria-label="Carolina Panthers" aria-pressed="false"><span class="team-mark mark-car"><img src="/assets/team-logos/car.png" alt=""></span><span class="team-name">Panthers</span></button>
+                <button class="team-chip" type="button" aria-label="Chicago Bears" aria-pressed="false"><span class="team-mark mark-chi"><img src="/assets/team-logos/chi.png" alt=""></span><span class="team-name">Bears</span></button>
+                <button class="team-chip" type="button" aria-label="Cincinnati Bengals" aria-pressed="false"><span class="team-mark mark-cin"><img src="/assets/team-logos/cin.png" alt=""></span><span class="team-name">Bengals</span></button>
+                <button class="team-chip" type="button" aria-label="Cleveland Browns" aria-pressed="false"><span class="team-mark mark-cle"><img src="/assets/team-logos/cle.png" alt=""></span><span class="team-name">Browns</span></button>
+                <button class="team-chip" type="button" aria-label="Dallas Cowboys" aria-pressed="false"><span class="team-mark mark-dal"><img src="/assets/team-logos/dal.png" alt=""></span><span class="team-name">Cowboys</span></button>
+                <button class="team-chip" type="button" aria-label="Denver Broncos" aria-pressed="false"><span class="team-mark mark-den"><img src="/assets/team-logos/den.png" alt=""></span><span class="team-name">Broncos</span></button>
+                <button class="team-chip" type="button" aria-label="Detroit Lions" aria-pressed="false"><span class="team-mark mark-det"><img src="/assets/team-logos/det.png" alt=""></span><span class="team-name">Lions</span></button>
+                <button class="team-chip" type="button" aria-label="Green Bay Packers" aria-pressed="false"><span class="team-mark mark-gb"><img src="/assets/team-logos/gb.png" alt=""></span><span class="team-name">Packers</span></button>
+                <button class="team-chip" type="button" aria-label="Houston Texans" aria-pressed="false"><span class="team-mark mark-hou"><img src="/assets/team-logos/hou.png" alt=""></span><span class="team-name">Texans</span></button>
+                <button class="team-chip" type="button" aria-label="Indianapolis Colts" aria-pressed="false"><span class="team-mark mark-ind"><img src="/assets/team-logos/ind.png" alt=""></span><span class="team-name">Colts</span></button>
+                <button class="team-chip" type="button" aria-label="Jacksonville Jaguars" aria-pressed="false"><span class="team-mark mark-jax"><img src="/assets/team-logos/jac.png" alt=""></span><span class="team-name">Jaguars</span></button>
+                <button class="team-chip" type="button" aria-label="Kansas City Chiefs" aria-pressed="false"><span class="team-mark mark-kc"><img src="/assets/team-logos/kc.png" alt=""></span><span class="team-name">Chiefs</span></button>
+                <button class="team-chip" type="button" aria-label="Las Vegas Raiders" aria-pressed="false"><span class="team-mark mark-lv"><img src="/assets/team-logos/lv.png" alt=""></span><span class="team-name">Raiders</span></button>
+                <button class="team-chip" type="button" aria-label="Los Angeles Chargers" aria-pressed="false"><span class="team-mark mark-lac"><img src="/assets/team-logos/lac.png" alt=""></span><span class="team-name">Chargers</span></button>
+                <button class="team-chip" type="button" aria-label="Los Angeles Rams" aria-pressed="false"><span class="team-mark mark-lar"><img src="/assets/team-logos/lar.png" alt=""></span><span class="team-name">Rams</span></button>
+                <button class="team-chip" type="button" aria-label="Miami Dolphins" aria-pressed="false"><span class="team-mark mark-mia"><img src="/assets/team-logos/mia.png" alt=""></span><span class="team-name">Dolphins</span></button>
+                <button class="team-chip" type="button" aria-label="Minnesota Vikings" aria-pressed="false"><span class="team-mark mark-min"><img src="/assets/team-logos/min.png" alt=""></span><span class="team-name">Vikings</span></button>
+                <button class="team-chip" type="button" aria-label="New England Patriots" aria-pressed="false"><span class="team-mark mark-ne"><img src="/assets/team-logos/ne.png" alt=""></span><span class="team-name">Patriots</span></button>
+                <button class="team-chip" type="button" aria-label="New Orleans Saints" aria-pressed="false"><span class="team-mark mark-no"><img src="/assets/team-logos/no.png" alt=""></span><span class="team-name">Saints</span></button>
+                <button class="team-chip" type="button" aria-label="New York Giants" aria-pressed="false"><span class="team-mark mark-nyg"><img src="/assets/team-logos/nyg.png" alt=""></span><span class="team-name">Giants</span></button>
+                <button class="team-chip" type="button" aria-label="New York Jets" aria-pressed="false"><span class="team-mark mark-nyj"><img src="/assets/team-logos/nyj.png" alt=""></span><span class="team-name">Jets</span></button>
+                <button class="team-chip" type="button" aria-label="Philadelphia Eagles" aria-pressed="false"><span class="team-mark mark-phi"><img src="/assets/team-logos/phi.png" alt=""></span><span class="team-name">Eagles</span></button>
+                <button class="team-chip" type="button" aria-label="Pittsburgh Steelers" aria-pressed="false"><span class="team-mark mark-pit"><img src="/assets/team-logos/pit.png" alt=""></span><span class="team-name">Steelers</span></button>
+                <button class="team-chip" type="button" aria-label="San Francisco 49ers" aria-pressed="false"><span class="team-mark mark-sf"><img src="/assets/team-logos/sf.png" alt=""></span><span class="team-name">49ers</span></button>
+                <button class="team-chip" type="button" aria-label="Seattle Seahawks" aria-pressed="false"><span class="team-mark mark-sea"><img src="/assets/team-logos/sea.png" alt=""></span><span class="team-name">Seahawks</span></button>
+                <button class="team-chip" type="button" aria-label="Tampa Bay Buccaneers" aria-pressed="false"><span class="team-mark mark-tb"><img src="/assets/team-logos/tb.png" alt=""></span><span class="team-name">Buccaneers</span></button>
+                <button class="team-chip" type="button" aria-label="Tennessee Titans" aria-pressed="false"><span class="team-mark mark-ten"><img src="/assets/team-logos/ten.png" alt=""></span><span class="team-name">Titans</span></button>
+                <button class="team-chip" type="button" aria-label="Washington Commanders" aria-pressed="false"><span class="team-mark mark-wsh"><img src="/assets/team-logos/wsh.png" alt=""></span><span class="team-name">Commanders</span></button>
+            </div>
         </section>
+
+        <section class="dashboard-grid" aria-label="Team dashboard">
+            <article class="dashboard-card games-card">
+                <div class="card-topline"><span class="icon-bubble">🏈</span><span class="card-label">Next up</span></div>
+                <h2>Upcoming games</h2>
+                <p class="card-subtitle">The next chapter starts here.</p>
+                <div class="game-placeholder"><span class="placeholder-date">COMING SOON</span><strong>Schedule loading</strong><span>Pick a team to see their games</span></div>
+            </article>
+
+            <article class="dashboard-card empty-card"><span class="icon-bubble">✦</span><h2>Team snapshot</h2><p>Stats, records, and more soon.</p></article>
+            <article class="dashboard-card empty-card"><span class="icon-bubble">☼</span><h2>Latest news</h2><p>Your team’s headlines will live here.</p></article>
+            <article class="dashboard-card empty-card"><span class="icon-bubble">♢</span><h2>Standings</h2><p>A little league-wide context is coming.</p></article>
+        </section>
+
+        <footer class="status-bar">
+            <span class="status-light"></span>
+            <span id="health-status">Checking backend connection…</span>
+            <button id="health-button" type="button">Refresh</button>
+        </footer>
     </main>
 
     <script type="module" src="/dist/main.js"></script>
