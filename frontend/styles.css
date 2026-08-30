@@ -16,6 +16,22 @@ h1, h2 { font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; 
 h1 { max-width: 650px; margin: 14px 0 12px; font-size: clamp(48px, 7vw, 82px); line-height: .88; letter-spacing: -.025em; }
 h1 span { color: var(--field); }
 .hero-copy { margin-bottom: 0; color: var(--muted); font-size: 17px; }
+.header-controls { display: flex; align-items: end; gap: 12px; }
+.control-label { display: block; margin: 0 0 5px 2px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.favorite-picker { position: relative; }
+.favorite-trigger { display: flex; align-items: center; gap: 9px; min-width: 152px; padding: 7px 10px 7px 7px; border: 1px solid rgba(16,39,29,.14); border-radius: 8px; color: var(--ink); background: rgba(251,250,242,.84); box-shadow: 0 8px 24px rgba(16,39,29,.1); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.favorite-trigger:hover, .favorite-trigger:focus-visible { border-color: var(--field); outline: none; }
+.favorite-trigger .team-mark { width: 38px; height: 38px; border-width: 2px; }
+.favorite-trigger .team-mark img { width: 29px; height: 29px; }
+.favorite-chevron { margin-left: auto; color: var(--field); font-size: 19px; line-height: 1; }
+.favorite-menu { position: absolute; z-index: 2; top: calc(100% + 8px); right: 0; width: min(350px, calc(100vw - 32px)); padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); box-shadow: 0 18px 38px rgba(16,39,29,.2); }
+.favorite-menu p { margin: 0 0 12px; color: var(--field); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.favorite-team-options { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; }
+.favorite-option { display: grid; place-items: center; aspect-ratio: 1; padding: 3px; border: 2px solid transparent; border-radius: 7px; background: transparent; cursor: pointer; }
+.favorite-option:hover, .favorite-option:focus-visible { border-color: var(--field); background: #edf5e8; outline: none; }
+.favorite-option[aria-pressed="true"] { border-color: var(--orange); background: #fff0e8; }
+.favorite-option .team-mark { width: 31px; height: 31px; border-width: 2px; }
+.favorite-option .team-mark img { width: 23px; height: 23px; }
 .league-selector { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; border: 1px solid rgba(16,39,29,.14); border-radius: 8px; background: rgba(251,250,242,.84); box-shadow: 0 8px 24px rgba(16,39,29,.1); }
 .league-selector label { color: var(--muted); font-size: 12px; font-weight: 700; }
 #league-select { padding: 10px 14px; border: 0; border-radius: 5px; color: var(--ink); background: var(--lime); font: inherit; font-weight: 700; cursor: pointer; }
@@ -32,7 +48,7 @@ h1 span { color: var(--field); }
 .team-mark { display: grid; place-items: center; width: 58px; height: 58px; border: 4px solid rgba(255,255,255,.75); border-radius: 50%; color: white; box-shadow: 0 5px 11px rgba(25,35,61,.18); font-size: 12px; font-weight: 700; letter-spacing: -.04em; }
 .team-mark img { width: 43px; height: 43px; object-fit: contain; }
 .team-name { overflow: hidden; max-width: 90px; color: var(--muted); font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-/* Team-color badge treatments; these are logo-style placeholders until image assets are added. */
+/* Team-color badge treatments frame each club logo. */
 .mark-ari { background: #97233f; }.mark-atl { background: #a71930; }.mark-bal { background: #241773; }.mark-buf { background: #00338d; }.mark-car { background: #0085ca; }.mark-chi { background: #0b162a; }.mark-cin { background: #fb4f14; }.mark-cle { background: #ff3c00; }.mark-dal { background: #041e42; }.mark-den { background: #fb4f14; }.mark-det { background: #0076b6; }.mark-gb { background: #203731; }.mark-hou { background: #03202f; }.mark-ind { background: #002c5f; }.mark-jax { background: #006778; }.mark-kc { background: #e31837; }.mark-lv { background: #111; }.mark-lac { background: #0080c6; }.mark-lar { background: #003594; }.mark-mia { background: #008e97; }.mark-min { background: #4f2683; }.mark-ne { background: #002244; }.mark-no { background: #d3bc8d; }.mark-nyg { background: #0b2265; }.mark-nyj { background: #125740; }.mark-phi { background: #004c54; }.mark-pit { color: #101820; background: #ffb612; }.mark-sf { background: #aa0000; }.mark-sea { color: #002244; background: #69be28; }.mark-tb { background: #d50a0a; }.mark-ten { background: #4b92db; }.mark-wsh { background: #5a1414; }
 .dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
 .dashboard-card { min-height: 260px; padding: 27px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); box-shadow: 0 12px 35px rgba(16,39,29,.1); }
@@ -50,4 +66,4 @@ h1 span { color: var(--field); }
 .status-bar .status-light { flex: 0 0 auto; }
 .status-bar button { margin-left: auto; padding: 8px 13px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .status-bar button:hover { border-color: var(--field); color: var(--field); }
-@media (max-width: 700px) { .container { padding: 28px 16px; } .hero-row { align-items: start; flex-direction: column; } .league-selector { align-self: stretch; justify-content: space-between; } .team-picker, .dashboard-card { padding: 20px; border-radius: 23px; } .dashboard-grid { grid-template-columns: 1fr; } .games-card { grid-row: auto; min-height: 380px; } .empty-card { min-height: 180px; } .scroll-hint { display: none; } }
+@media (max-width: 700px) { .container { padding: 28px 16px; } .hero-row { align-items: start; flex-direction: column; } .header-controls { align-items: end; width: 100%; } .favorite-picker { flex: 1 1 auto; } .favorite-trigger { width: 100%; } .league-selector { align-self: stretch; justify-content: space-between; } .team-picker, .dashboard-card { padding: 20px; border-radius: 8px; } .dashboard-grid { grid-template-columns: 1fr; } .games-card { grid-row: auto; min-height: 380px; } .empty-card { min-height: 180px; } .scroll-hint { display: none; } }
