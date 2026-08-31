@@ -15,14 +15,20 @@ GO
 Where backend fetches all relevant information and frontend serves the data.
 
 ### API data provider
-[api-sports.io](https://api-sports.io) free tier is used for this project serving 100 requests per day.
-To run locally simply create an account and pop your api key into a .env file at the top level directory. The GO backend will read it dynamically as long as it's stored in the format your_custom_arbritary_var_name=<api_key> :) TODO change this with new provider
+[BALLDONTLIE NFL](https://nfl.balldontlie.io/) is used for NFL teams and games. Its free tier permits five requests per minute and includes current and scheduled games.
+
+Create an account, then add the key to a top-level `.env` file:
+
+```text
+BDL_API_KEY=your_api_key
+```
+
 
 ### Revision history
 
-gatlingun 08/2026 Project start
-gatlingun 08/2026 api-sports.io integrated as data source
-gatlingun 08/2026 Found out api-sports.io isn't gonna cut it (no free recent data)
+gatlingun 08/2026 Project start \
+gatlingun 08/2026 api-sports.io integrated as data source \
+gatlingun 08/2026 api-sports.io replaced with BALLDONTLIE NFL
 
 ### AI Disclaimer
 AI coding assistants were used in the creation of this project

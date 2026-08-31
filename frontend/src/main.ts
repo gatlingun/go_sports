@@ -152,15 +152,14 @@ healthButton?.addEventListener("click", checkHealth);
 async function checkHealth(): Promise<void> {
     try {
         const response = await fetch("/health");
-
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
         const data = await response.json();
 
         if (healthStatus) {
             healthStatus.textContent = `Backend status: ${data.status}`;
+        }
+
+        if (!response.ok) {
+            console.warn(`Backend health check returned HTTP ${response.status}`);
         }
     } catch (error) {
         console.error("Failed to check backend health:", error);

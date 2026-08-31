@@ -8,85 +8,89 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
-const health_status_url string = "https://v1.american-football.api-sports.io/status"
+var apiKey string
 
-var api_key string
+const ballDontLieAvailabilityURL = "https://api.balldontlie.io/nfl/v1/teams"
 
-// Health response struct
+var providerHealthClient = &http.Client{Timeout: 5 * time.Second}
+
 type HealthResponse struct {
-	Status   string `json:"status"`
-	Response struct {
-		Requests struct {
-			Current   int `json:"current"`
-			Limit_day int `json:"limit_day"`
-		} `json:"requests"`
-	} `json:"response"`
+	Status string `json:"status"`
 }
 
-// health handler processes health requests
+// healthHandler checks that the BALLDONTLIE API is reachable without sending
+// this application's API key. An expected 401 proves the provider is online
+// while avoiding any quota usage for the configured key.
 func healthHandler(w http.ResponseWriter, r *http.Request) {
-	//response to pass to frontend
 	w.Header().Set("Content-Type", "application/json")
-	var decoded_response HealthResponse
-	decoded_response.Status = "ERROR"
-
-	client := &http.Client{}
-	req, err := http.NewRequest(http.MethodGet, health_status_url, nil)
-	if err != nil {
-		log.Println(err)
+	if apiKey == "" || !ballDontLieAvailable(r) {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		if err := json.NewEncoder(w).Encode(HealthResponse{Status: "NOT_OK"}); err != nil {
+			log.Println("Error encoding health response:", err)
+		}
 		return
 	}
-	req.Header.Add("x-apisports-key", api_key)
-	res, err := client.Do(req)
+	if err := json.NewEncoder(w).Encode(HealthResponse{Status: "OK"}); err != nil {
+		log.Println("Error encoding health response:", err)
+	}
+}
+
+func ballDontLieAvailable(r *http.Request) bool {
+	req, err := http.NewRequestWithContext(r.Context(), http.MethodGet, ballDontLieAvailabilityURL, nil)
 	if err != nil {
-		log.Println(err)
-		return
+		log.Println("Unable to create BALLDONTLIE availability request:", err)
+		return false
+	}
+	res, err := providerHealthClient.Do(req)
+	if err != nil {
+		log.Println("BALLDONTLIE availability check failed:", err)
+		return false
 	}
 	defer res.Body.Close()
-
-	err = json.NewDecoder(res.Body).Decode(&decoded_response)
-	if err != nil {
-		log.Println("Error decoding response:", err)
-		return
-	}
-	if decoded_response.Response.Requests.Limit_day-decoded_response.Response.Requests.Current > 0 {
-		decoded_response.Status = "OK"
-		w.WriteHeader(http.StatusOK)
-	}
-
-	json.NewEncoder(w).Encode(decoded_response)
-
+	return res.StatusCode == http.StatusUnauthorized || (res.StatusCode >= http.StatusOK && res.StatusCode < http.StatusMultipleChoices)
 }
 
-// Helper to resolve global api key
+// resolveAPIKey reads BDL_API_KEY from the project .env file.
 func resolveAPIKey() error {
 	data, err := os.ReadFile("../.env")
 	if err != nil {
-		log.Println("API key couldn't be found")
-		return errors.New("No API key")
+		return errors.New("API key couldn't be found")
 	}
-	split_data := strings.SplitN(string(data), "=", 2)
-	api_key = split_data[1]
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		key, value, found := strings.Cut(line, "=")
+		if found && strings.TrimSpace(key) == "BDL_API_KEY" {
+			apiKey = strings.TrimSpace(value)
+			break
+		}
+	}
+	if apiKey == "" {
+		_, value, found := strings.Cut(strings.TrimSpace(string(data)), "=")
+		if found {
+			apiKey = strings.TrimSpace(value)
+		}
+	}
+	if apiKey == "" {
+		return errors.New("BDL_API_KEY couldn't be found")
+	}
 	return nil
 }
 
 func main() {
 	fmt.Println("starting webservice")
-	//Resolve api key
-	err := resolveAPIKey()
-	if err != nil {
-		os.Exit(-1)
+	if err := resolveAPIKey(); err != nil {
+		log.Println(err)
+		os.Exit(1)
 	}
-	// Route requests for health handler
 	http.HandleFunc("/health", healthHandler)
-	//Route requests for games to game fetcher handler
-	http.HandleFunc("/nfl_games", nfl_game_data_fetch_handler)
-	//Register frontend
-	fileServer := http.FileServer(http.Dir("../frontend"))
-	http.Handle("/", fileServer)
-	// Start the server on port 8080
+	http.HandleFunc("/nfl_games", nflGameDataFetchHandler)
+	http.Handle("/", http.FileServer(http.Dir("../frontend")))
 	fmt.Println("Server is running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

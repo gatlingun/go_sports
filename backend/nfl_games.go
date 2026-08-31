@@ -4,62 +4,60 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 )
 
-//MAJOR TODO api-sports.io doesn't provide unoccured games in free tier
-//Need new data source
+const ballDontLieGamesURL = "https://api.balldontlie.io/nfl/v1/games"
 
-const games_url string = "https://v1.american-football.api-sports.io/games"
-
-// Enum for nfl team ids per api-sports.io doc reference
-// https://dashboard.api-football.com/nfl/ids/teams
-type nfl_team int
-
-const (
-	las_vegas_raiders    nfl_team = 1
-	jacksonville_jaguars nfl_team = 2
-	new_england_patriots nfl_team = 3
-	new_york_giants      nfl_team = 4
-	balitmore_ravens     nfl_team = 5
-	tennesse_titans      nfl_team = 6
-	detroit_lions        nfl_team = 7
-	//TODO finish team list
-)
-
-func nfl_game_data_fetch_handler(w http.ResponseWriter, r *http.Request) {
-	//response to pass to frontend
+func nflGameDataFetchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	req, err := http.NewRequest(http.MethodGet, games_url, nil)
+	teamID := r.URL.Query().Get("team_id")
+	if teamID != "" {
+		if _, err := strconv.Atoi(teamID); err != nil {
+			http.Error(w, `{"error":"team_id must be a BALLDONTLIE numeric team ID"}`, http.StatusBadRequest)
+			return
+		}
+	}
+	req, err := http.NewRequestWithContext(r.Context(), http.MethodGet, ballDontLieGamesURL, nil)
 	if err != nil {
-		log.Println(err)
+		writeProviderError(w, err)
 		return
 	}
-	query_params := req.URL.Query()
-	//TODO pass team id from frontend to here
-	query_params.Add("team", "7")
-	//Minor TODO maybe query current year so we can update automatically?
-	query_params.Add("season", "2024")
-	req.URL.RawQuery = query_params.Encode()
-	req.Header.Add("x-apisports-key", api_key)
-	res, err := client.Do(req)
+	query := req.URL.Query()
+	query.Set("seasons[]", "2026")
+	query.Set("per_page", "100")
+	if teamID != "" {
+		query.Add("team_ids[]", teamID)
+	}
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Authorization", apiKey)
+
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
+		writeProviderError(w, err)
 		return
 	}
 	defer res.Body.Close()
 
-	var client_payload map[string]any
-
-	err = json.NewDecoder(res.Body).Decode(&client_payload)
-	if err != nil {
-		log.Println("Error decoding response:", err)
+	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
+		w.WriteHeader(res.StatusCode)
+		if err := json.NewEncoder(w).Encode(map[string]string{"error": "BALLDONTLIE request failed"}); err != nil {
+			log.Println("Error encoding provider error:", err)
+		}
 		return
 	}
-	w.WriteHeader(http.StatusOK)
 
-	//TODO transform data to better formatted json for frontend
+	var providerPayload any
+	if err := json.NewDecoder(res.Body).Decode(&providerPayload); err != nil {
+		writeProviderError(w, err)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(providerPayload); err != nil {
+		log.Println("Error encoding games response:", err)
+	}
+}
 
-	json.NewEncoder(w).Encode(client_payload)
+func writeProviderError(w http.ResponseWriter, err error) {
+	log.Println("BALLDONTLIE request error:", err)
+	http.Error(w, `{"error":"Unable to reach BALLDONTLIE"}`, http.StatusBadGateway)
 }
