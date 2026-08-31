@@ -15,6 +15,6 @@
   "type": "commonjs",
   "main": "frontend/dist/main.js",
   "scripts": {
-    "launch": "cd frontend && tsc && cd ../backend && go run ."
+    "launch": "cd frontend && tsc && cd ../backend && go run . & sleep 1 && open -a safari http://localhost:8080"
   }
 }
