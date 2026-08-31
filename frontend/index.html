@@ -92,7 +92,36 @@
                 <div class="card-topline"><span class="icon-bubble">🏈</span><span class="card-label">Next up</span></div>
                 <h2>Upcoming games</h2>
                 <p class="card-subtitle">The next chapter starts here.</p>
-                <div class="game-placeholder"><span class="placeholder-date">COMING SOON</span><strong>Schedule loading</strong><span>Pick a team to see their games</span></div>
+                <div id="games-content" aria-live="polite">
+                    <div id="games-loading" class="game-placeholder"><span class="placeholder-date">LOADING</span><strong>Schedule loading</strong><span>Getting this team’s 2026 games</span></div>
+                    <div id="game-navigator" class="game-navigator" hidden>
+                        <div class="game-navigator__header">
+                            <span id="game-week" class="placeholder-date"></span>
+                            <div class="game-context"><span id="game-status" class="game-status"></span><span id="game-position" class="game-position"></span></div>
+                        </div>
+                        <time id="game-date" class="game-date"></time>
+                        <div class="matchup">
+                            <div class="matchup-team">
+                                <span class="matchup-label">Away</span>
+                                <img id="away-logo" class="matchup-logo" src="" alt="">
+                                <strong id="away-team"></strong>
+                                <span id="away-score" class="team-score"></span>
+                            </div>
+                            <span class="matchup-at" aria-hidden="true">VS</span>
+                            <div class="matchup-team matchup-team--home">
+                                <span class="matchup-label">Home</span>
+                                <img id="home-logo" class="matchup-logo" src="" alt="">
+                                <strong id="home-team"></strong>
+                                <span id="home-score" class="team-score"></span>
+                            </div>
+                        </div>
+                        <p id="game-venue" class="game-venue"></p>
+                        <div class="game-navigation" aria-label="Schedule navigation">
+                            <button id="previous-game" class="game-navigation__button" type="button" aria-label="Show previous game"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"></path></svg><span>Previous</span></button>
+                            <button id="next-game" class="game-navigation__button game-navigation__button--next" type="button" aria-label="Show next game"><span>Next</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"></path></svg></button>
+                        </div>
+                    </div>
+                </div>
             </article>
 
             <article class="dashboard-card empty-card"><span class="icon-bubble">✦</span><h2>Team snapshot</h2><p>Stats, records, and more soon.</p></article>

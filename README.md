@@ -29,6 +29,7 @@ BDL_API_KEY=your_api_key
 gatlingun 08/2026 Project start \
 gatlingun 08/2026 api-sports.io integrated as data source \
 gatlingun 08/2026 api-sports.io replaced with BALLDONTLIE NFL
+gatlingun 08/2026 First working draft with 2026 NFL games provided
 
 ### AI Disclaimer
 AI coding assistants were used in the creation of this project
